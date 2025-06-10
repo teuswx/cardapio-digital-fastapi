@@ -9,7 +9,7 @@ from sqlalchemy import pool
 from alembic import context
 from decouple import config as decouple_config
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))) 
-from app.models.UserModel import Base
+from app.schemas.schemas import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

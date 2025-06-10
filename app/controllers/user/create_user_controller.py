@@ -1,13 +1,15 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from app.models.UserModel import UserModel
-from app.schemas.user import User
 from passlib.context import CryptContext
+
+from app.schemas.schemas import UserModel
+
+from app.models.user import User
 
 crypt_context = CryptContext(schemes=['sha256_crypt'])
 
-class AuthUserController:
+class CreateUserController:
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
@@ -15,7 +17,8 @@ class AuthUserController:
         user_model = UserModel(
             username=user.username,
             email=user.email,
-            password=crypt_context.hash(user.password)
+            password=crypt_context.hash(user.password),
+            tipo= user.tipo
         )
         try:
             self.db_session.add(user_model)

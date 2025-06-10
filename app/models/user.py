@@ -5,6 +5,7 @@ class User(BaseModel):
     username: str
     email: EmailStr
     password: str
+    tipo: str
 
     @field_validator('username')
     def validate_username(cls, value):
