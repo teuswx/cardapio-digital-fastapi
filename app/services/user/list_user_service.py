@@ -1,13 +1,13 @@
 from sqlalchemy.orm import Session
-from app.schemas.schemas import UserModel
+from app.schemas.schemas import UserSchema
 from fastapi import HTTPException, status
 
-class ListUserController:
+class ListUserService:
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
     def list_user(self):
-        usuarios = self.db_session.query(UserModel.id, UserModel.username, UserModel.email, UserModel.tipo).all()
+        usuarios = self.db_session.query(UserSchema.id, UserSchema.username, UserSchema.email, UserSchema.tipo).all()
         
         if not usuarios:
             raise HTTPException(

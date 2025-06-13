@@ -1,7 +1,7 @@
 import re
 from pydantic import BaseModel, field_validator, EmailStr
 
-class User(BaseModel):
+class CreateUserModel(BaseModel):
     username: str
     email: EmailStr
     password: str

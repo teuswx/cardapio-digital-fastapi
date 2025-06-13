@@ -3,18 +3,18 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from passlib.context import CryptContext
 
-from app.schemas.schemas import UserModel
+from app.schemas.schemas import UserSchema
 
-from app.models.user import User
+from app.models.user.create_user_model import CreateUserModel
 
 crypt_context = CryptContext(schemes=['sha256_crypt'])
 
-class CreateUserController:
+class CreateUserService:
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    def user_register(self, user: User):
-        user_model = UserModel(
+    def user_register(self, user: CreateUserModel):
+        user_model = UserSchema(
             username=user.username,
             email=user.email,
             password=crypt_context.hash(user.password),

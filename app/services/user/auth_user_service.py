@@ -5,20 +5,20 @@ from jose import jwt, JWTError
 from decouple import config
 from passlib.context import CryptContext
 
-from app.models.userLogin import UserLogin
-from app.schemas.schemas import UserModel
+from app.models.user.login_user_model import LoginUserModel
+from app.schemas.schemas import UserSchema
 
 
 SECRET_KEY = config('SECRET_KEY')
 ALGORITHM = config('ALGORITHM')
 crypt_context = CryptContext(schemes=['sha256_crypt'])
 
-class AuthUserController:
+class AuthUserService:
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    def user_login(self, user: UserLogin, expires_in: int = 30):
-        user_on_db = self.db_session.query(UserModel).filter_by(username=user.username).first()
+    def user_login(self, user: LoginUserModel, expires_in: int = 30):
+        user_on_db = self.db_session.query(UserSchema).filter_by(username=user.username).first()
         if user_on_db is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -43,22 +43,6 @@ class AuthUserController:
         return {
             'access_token': access_token,
             'expiration': expiration_str,
-            'tipo': user_on_db.tipo
         }
 
-    def verify_token(self, access_token):
-        try:
-            data = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
-
-        except JWTError:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail='Invalid access token'
-            )
-        user_on_db = self.db_session.query(UserModel).filter_by(username=data['sub']).first()
-
-        if user_on_db is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail='Invalid access token'
-            )
+    
