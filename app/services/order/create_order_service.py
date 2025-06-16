@@ -28,10 +28,7 @@ class CreateOrderService:
             self.db_session.add(order_model)
             self.db_session.commit()
 
-            return {
-                "message": "Ordem criada com sucesso",
-                "status": status.HTTP_202_ACCEPTED
-            }
+            return "Ordem criada com sucesso"
 
         except IntegrityError:
             self.db_session.rollback()

@@ -27,12 +27,9 @@ def create_order_router(order: CreateOrderModel, db_session: Session = Depends(g
     message = uc.create_order(order)
     
     return JSONResponse(
-    content={
-        "message": message,
-        "payload": token_verify['tipo'],
-        "status": status.HTTP_200_OK
-    },
-    status_code=status.HTTP_200_OK)
+        content=message,
+        status_code=status.HTTP_200_OK
+    )
 
 @order_router.get('/list')
 def list_order_router(db_session: Session = Depends(get_db_session), token_verify = Depends(token_verifier)):
@@ -40,26 +37,29 @@ def list_order_router(db_session: Session = Depends(get_db_session), token_verif
     list = uc.list_order()
     
     return JSONResponse(
-    content={
-        "orders": list,
-        "payload": token_verify['tipo'],
-        "status": status.HTTP_200_OK
-    },
-    status_code=status.HTTP_200_OK)
+        content=list,
+        status_code=status.HTTP_200_OK
+    )
 
 @order_router.delete('/order')
 def delete_order_router(order_id: DetailOrderModel, db_session: Session = Depends(get_db_session), token_verify = Depends(token_verifier)):
     uc = DeleteOrderService(db_session=db_session)
     message = uc.delete_order(order_id)
 
-    return message
+    return JSONResponse(
+        content=message,
+        status_code=status.HTTP_200_OK
+    )
 
 @order_router.post('/add')
 def add_item_router(item: AddItemModel, db_session: Session = Depends(get_db_session), token_verify = Depends(token_verifier)):
     uc = AddItemService(db_session=db_session)
     message = uc.add_item(item)
 
-    return message
+    return JSONResponse(
+        content=message,
+        status_code=status.HTTP_200_OK
+    )
 
 
 @order_router.delete('/item')
@@ -67,14 +67,20 @@ def delete_item_router(item: DeleteItemModel, db_session: Session = Depends(get_
     uc = DeleteItemService(db_session=db_session)
     message = uc.delete_item(item)
 
-    return message
+    return JSONResponse(
+        content=message,
+        status_code=status.HTTP_200_OK
+    )
 
 @order_router.put('/send')
 def send_order_router(order: DetailOrderModel, db_session: Session = Depends(get_db_session), token_verify = Depends(token_verifier)):
     uc = SendOrderService(db_session=db_session)
     message = uc.send_order(order)
 
-    return message
+    return JSONResponse(
+        content=message,
+        status_code=status.HTTP_200_OK
+    )
 
 
 @order_router.get('/detail')
@@ -83,10 +89,9 @@ def detail_order_router(item_id: DetailOrderModel, db_session: Session = Depends
     item_details = uc.detail_order(item_id)
 
     return JSONResponse(
-    content={
-        "detalhes":item_details
-    },
-    status_code=status.HTTP_200_OK)
+        content=item_details,
+        status_code=status.HTTP_200_OK
+    )
 
 @order_router.put('/finish')
 def finish_order_router(order_id: DetailOrderModel, db_session: Session = Depends(get_db_session), token_verify = Depends(token_verifier)):

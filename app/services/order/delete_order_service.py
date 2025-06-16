@@ -21,10 +21,5 @@ class DeleteOrderService:
         self.db_session.delete(order)
         self.db_session.commit()
 
-        return JSONResponse(
-            content={
-                "message": "Ordem deletada com sucesso!",
-            },
-            status_code=status.HTTP_200_OK
-        )
+        return "Ordem deletada com sucesso!"
         

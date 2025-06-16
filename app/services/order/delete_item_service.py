@@ -22,9 +22,5 @@ class DeleteItemService:
         self.db_session.delete(item)
         self.db_session.commit()
 
-        return JSONResponse(
-            content={
-                "message": "Item deletado com sucesso!",
-            },
-            status_code=status.HTTP_200_OK
-        )
+        return "Item deletado com sucesso!",
+         
