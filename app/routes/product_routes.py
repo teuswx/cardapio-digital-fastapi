@@ -11,6 +11,8 @@ from app.models.product.create_product_model import CreateProductModel
 
 # services
 from app.services.product.create_product_service import CreateProductService
+from app.services.product.list_product_service import ListProductService
+
 product_router = APIRouter(prefix='/product')
 
 @product_router.post('/create')
@@ -59,6 +61,30 @@ def create_product_route(
     return JSONResponse(
     content={
         "message": product_message['message'],
+        "payload": token_verify['tipo'],
+        "status": status.HTTP_200_OK
+    },
+    status_code=status.HTTP_200_OK)
+
+
+@product_router.get('/list')
+def list_product_router(db_session: Session = Depends(get_db_session), token_verify = Depends(token_verifier)):
+    if token_verify['tipo'] == 'admin':
+        uc = ListProductService(db_session=db_session)
+        product_list = uc.list_product()
+    else:
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail={
+                    'detalhe':'Este tipo de usuário não tem acesso a rota', 
+                    'status':status.HTTP_401_UNAUTHORIZED
+                }
+            )
+
+    
+    return JSONResponse(
+    content={
+        "products": product_list,
         "payload": token_verify['tipo'],
         "status": status.HTTP_200_OK
     },
