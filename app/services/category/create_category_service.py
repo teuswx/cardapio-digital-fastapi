@@ -28,4 +28,4 @@ class CreateCategoryService:
                 detail=f"Erro ao salvar no banco: {str(e)}"
             )
 
-        return {"message": f"Categoria {category.name} criada com sucesso"}
+        return f"Categoria {category.name} criada com sucesso"

@@ -47,7 +47,7 @@ def create_product_route(
         )
 
         uc = CreateProductService(db_session=db_session)
-        product_message = uc.create_product(product=product)
+        message = uc.create_product(product=product)
     else:
         raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -59,12 +59,9 @@ def create_product_route(
     
    
     return JSONResponse(
-    content={
-        "message": product_message['message'],
-        "payload": token_verify['tipo'],
-        "status": status.HTTP_200_OK
-    },
-    status_code=status.HTTP_200_OK)
+        content=message,
+        status_code=status.HTTP_200_OK
+    )
 
 
 @product_router.get('/list')
@@ -83,9 +80,6 @@ def list_product_router(db_session: Session = Depends(get_db_session), token_ver
 
     
     return JSONResponse(
-    content={
-        "products": product_list,
-        "payload": token_verify['tipo'],
-        "status": status.HTTP_200_OK
-    },
-    status_code=status.HTTP_200_OK)
+        content=product_list,
+        status_code=status.HTTP_200_OK
+    )

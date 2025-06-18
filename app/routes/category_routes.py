@@ -17,7 +17,7 @@ category_router = APIRouter(prefix='/category')
 def create_category_route(category: CreateCategoryModel, db_session: Session = Depends(get_db_session), token_verify = Depends(token_verifier)):
     if token_verify['tipo'] == 'admin':
         uc = CreateCategoryService(db_session=db_session)
-        category_message = uc.create_category(category=category)
+        message = uc.create_category(category=category)
     else:
         raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -28,12 +28,9 @@ def create_category_route(category: CreateCategoryModel, db_session: Session = D
             )
 
     return JSONResponse(
-    content={
-        "message": category_message['message'],
-        "payload": token_verify['tipo'],
-        "status": status.HTTP_200_OK
-    },
-    status_code=status.HTTP_200_OK)
+        content=message,
+        status_code=status.HTTP_200_OK
+    )
 
 
 @category_router.get('/list')
@@ -52,9 +49,6 @@ def list_category_route(db_session: Session = Depends(get_db_session), token_ver
 
     
     return JSONResponse(
-    content={
-        "categories": category_list,
-        "payload": token_verify['tipo'],
-        "status": status.HTTP_200_OK
-    },
-    status_code=status.HTTP_200_OK)
+        content=category_list,
+        status_code=status.HTTP_200_OK
+    )

@@ -1,5 +1,4 @@
 from fastapi import HTTPException, status
-from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from app.models.user.delete_user_model import DeleteUserModel
 from app.schemas.schemas import UserSchema
@@ -23,10 +22,4 @@ class DeleteUserService:
         self.db_session.delete(user)
         self.db_session.commit()
 
-        return JSONResponse(
-            content={
-                "message": "Usuário deletado com sucesso!",
-                "status": status.HTTP_200_OK
-            },
-            status_code=status.HTTP_200_OK
-        )
+        return "Usuário deletado com sucesso!"

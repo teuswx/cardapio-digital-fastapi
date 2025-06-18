@@ -16,6 +16,7 @@ from app.services.user.create_user_service import CreateUserService
 from app.services.user.auth_user_service import AuthUserService
 from app.services.user.list_user_service import ListUserService
 from app.services.user.delete_user_service import DeleteUserService
+from app.services.user.me_user_service import MeUserService
 
 user_router = APIRouter(prefix='/user')
 
@@ -25,19 +26,19 @@ user_router = APIRouter(prefix='/user')
 @user_router.post('/register')
 def user_register(user: CreateUserModel, db_session: Session = Depends(get_db_session)):
     uc = CreateUserService(db_session=db_session)
-    uc.user_register(user=user)
+    message = uc.user_register(user=user)
 
     return JSONResponse(
-        content={"msg": "Success"},
+        content=message,
         status_code=status.HTTP_201_CREATED
     )
 
 @user_router.post('/login')
 def user_login(request_form_user: OAuth2PasswordRequestForm = Depends(), db_session: Session = Depends(get_db_session)):
     uc = AuthUserService(db_session=db_session)
-    # Ajuste: Use o campo username que foi alterado no modelo User
+    
     user = LoginUserModel(
-        username=request_form_user.username,  # Agora estamos usando 'username'
+        username=request_form_user.username,  
         password=request_form_user.password,
     )
     auth_data = uc.user_login(user=user)
@@ -63,11 +64,7 @@ def test_user_verify(db_session: Session = Depends(get_db_session) ,token_verify
 
     
     return JSONResponse(
-    content={
-        "users": user_list,
-        "payload": token_verify['tipo'],
-        "status": status.HTTP_200_OK
-    },
+    content=user_list,
     status_code=status.HTTP_200_OK)
     
 
@@ -85,5 +82,19 @@ def delete_user_route(user_id: DeleteUserModel, db_session: Session = Depends(ge
                     'status':status.HTTP_401_UNAUTHORIZED
                 }
             )
-    return message
+    return JSONResponse(
+            content=message,
+            status_code=status.HTTP_200_OK
+        )
+
+@user_router.get('/me')  
+def me_user_route(db_session: Session = Depends(get_db_session), token_verify = Depends(token_verifier)):
+    user_id = token_verify['id']
+    uc = MeUserService(db_session=db_session)
+    message = uc.me_user(user_id)  
+
+    return JSONResponse(  
+        content=message,
+        status_code=status.HTTP_200_OK
+    )
 

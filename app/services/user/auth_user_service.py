@@ -1,7 +1,7 @@
 from datetime import datetime, timezone, timedelta
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from jose import jwt, JWTError
+from jose import jwt
 from decouple import config
 from passlib.context import CryptContext
 
@@ -35,13 +35,14 @@ class AuthUserService:
         payload = {
             'sub': user.username,
             'exp': expiration,
-            'tipo': user_on_db.tipo
+            'tipo': user_on_db.tipo,
+            'id': user_on_db.id
         }
         access_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
         expiration_str = expiration.isoformat()
         return {
-            'access_token': access_token,
+            'token': access_token,
             'expiration': expiration_str,
         }
 

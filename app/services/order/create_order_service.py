@@ -31,7 +31,7 @@ class CreateOrderService:
             return "Ordem criada com sucesso"
 
         except IntegrityError:
-            self.db_session.rollback()
+            self.db_session.rollback() 
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Erro de integridade: dados duplicados ou inválidos."

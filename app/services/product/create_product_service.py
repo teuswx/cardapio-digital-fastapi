@@ -36,4 +36,4 @@ class CreateProductService:
                 detail=f"Erro ao salvar no banco: {str(e)}"
             )
 
-        return {"message": f"Produto criado com sucesso"}
+        return "Produto criado com sucesso"

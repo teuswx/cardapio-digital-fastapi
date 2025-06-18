@@ -23,7 +23,7 @@ class CreateUserService:
         try:
             self.db_session.add(user_model)
             self.db_session.commit()
-            return {"message": "User created successfully"}
+            return "User created successfully"
         except IntegrityError:
             self.db_session.rollback()
             raise HTTPException(
