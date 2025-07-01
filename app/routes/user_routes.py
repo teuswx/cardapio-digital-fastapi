@@ -49,7 +49,7 @@ def user_login(request_form_user: OAuth2PasswordRequestForm = Depends(), db_sess
 
 @user_router.get('/list')
 def test_user_verify(db_session: Session = Depends(get_db_session) ,token_verify = Depends(token_verifier)):
-    print('oi')
+   
     if token_verify['tipo'] == 'admin':
         uc = ListUserService(db_session=db_session)
         user_list = uc.list_user()
