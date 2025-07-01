@@ -20,6 +20,7 @@ class MeUserService:
         return {
             "id": user.id,
             "email": user.email,
-            "username": user.username
+            "username": user.username,
+            "tipo": user.tipo
         }
 

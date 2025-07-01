@@ -5,14 +5,6 @@ from fastapi import HTTPException, status
 from app.models.order.create_order_model import CreateOrderModel
 
 from app.schemas.schemas import OrderSchema
-class CreateOrderService:
-    def __init__(self, db_session: Session):
-        self.db_session = db_session
-
-    def create_order(self, order: CreateOrderModel):
-        
-       from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from fastapi import HTTPException, status
 
 class CreateOrderService:
     def __init__(self, db_session: Session):
