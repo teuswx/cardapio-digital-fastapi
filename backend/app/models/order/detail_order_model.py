@@ -1,4 +1,4 @@
 from pydantic import BaseModel
 
 class DetailOrderModel(BaseModel):
-    id: int
+    order_id: int

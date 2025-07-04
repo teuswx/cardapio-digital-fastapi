@@ -17,7 +17,6 @@ export default function Home() {
       return;
     }
 
-    console.log(username, password)
     try{
       const response = await api.post("/user/login",formData,{
         headers:{

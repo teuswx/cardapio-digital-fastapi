@@ -7,8 +7,8 @@ class DetailOrderService:
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    def detail_order(self, order_id: DetailOrderModel):
-        item = self.db_session.query(ItemSchema).filter_by(id=order_id.id).first()
+    def detail_order(self, order_id: int):
+        item = self.db_session.query(ItemSchema).filter_by(id=order_id).first()
 
         if not item:
             raise HTTPException(
@@ -17,9 +17,11 @@ class DetailOrderService:
             )
         
         return {
-        "item":{
             "id": item.id,
             "amount": item.amount,
+            "created_at": str(item.created_at),
+            "order_id": item.order_id,
+            "product_id": item.product_id,
             "product": {
                 "id": item.product.id,
                 "name": item.product.name,
@@ -27,20 +29,17 @@ class DetailOrderService:
                 "description": item.product.description,
                 "banner": item.product.banner,
                 "category_id": item.product.category_id,
-                "created_at": str(item.product.created_at),
-                "updated_at": str(item.product.updated_at)
                 },
             "order": {
                 "id": item.order.id,
                 "table": item.order.table,
-                "status": item.order.status,
-                "draft": item.order.draft,
                 "name": item.order.name,
-                "created_at": str(item.order.created_at),
-                "updated_at": str(item.order.updated_at)
+                "draft": item.order.draft,
+                "status": item.order.status
+
             }
         }
-       
-    }
+    
+    
         
         

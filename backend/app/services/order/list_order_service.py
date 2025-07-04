@@ -22,18 +22,17 @@ class ListOrderService:
             )
         
     
-        return{
-            "ordens: ":
-            [
-                {
-                    "id": o.id,
-                    "name":o.name,
-                    "status":o.status,
-                    "draft": o.draft,
-                    "table":o.table,
-                    "created_at": o.created_at.isoformat() if o.created_at else None,
-                    "updated_at": o.updated_at.isoformat() if o.updated_at else None
-                }
-                for o in orders
-            ]
+        
+     
+        return [{
+            "id": o.id,
+            "name": o.name,
+            "status": o.status,
+            "draft": o.draft,
+            "table": o.table,
+            "created_at": o.created_at.isoformat() if o.created_at else None,
+            "updated_at": o.updated_at.isoformat() if o.updated_at else None
         }
+        for o in orders
+        ]
+

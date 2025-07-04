@@ -11,7 +11,7 @@ class FinishOrderService:
         self.db_session = db_session
 
     def fish_order(self, order_id: DetailOrderModel):
-        order = self.db_session.query(OrderSchema).filter_by(id=order_id.id).first()
+        order = self.db_session.query(OrderSchema).filter_by(id=order_id.order_id).first()
 
         if not order:
             raise HTTPException(

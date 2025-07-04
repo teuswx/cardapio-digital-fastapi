@@ -23,7 +23,8 @@ class CreateProductService:
             name= product.name,
             price = product.price,
             description = product.description,
-            banner = product.banner
+            banner = product.banner,
+            category_id = product.category_id
         ) 
 
         try:

@@ -36,8 +36,7 @@ def create_product_route(
         file_location = f"{temp_dir}/{filename}"
         with open(file_location, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
-
-
+            
         product = CreateProductModel(
             name=name,
             price=price,

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from app.depends import get_db_session, token_verifier
+from fastapi import Query
 
 # model
 from app.models.order.create_order_model import CreateOrderModel
@@ -84,9 +85,13 @@ def send_order_router(order: DetailOrderModel, db_session: Session = Depends(get
 
 
 @order_router.get('/detail')
-def detail_order_router(item_id: DetailOrderModel, db_session: Session = Depends(get_db_session), token_verify = Depends(token_verifier)):
+def detail_order_router(
+    order_id: int = Query(..., alias="order_id"),  # Recebe o 'order_id' da query param
+    db_session: Session = Depends(get_db_session),
+    token_verify = Depends(token_verifier)
+):
     uc = DetailOrderService(db_session=db_session)
-    item_details = uc.detail_order(item_id)
+    item_details = uc.detail_order(order_id)
 
     return JSONResponse(
         content=item_details,
