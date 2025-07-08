@@ -10,7 +10,7 @@ class ListOrderService:
         self.db_session = db_session
 
     def list_order(self):
-        orders = self.db_session.query(OrderSchema).all()
+        orders = self.db_session.query(OrderSchema).filter_by(status=0).all()
 
         if not orders:
             raise HTTPException(

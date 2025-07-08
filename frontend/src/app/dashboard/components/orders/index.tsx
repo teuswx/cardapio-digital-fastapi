@@ -1,6 +1,6 @@
 "use client"
 
-import {use} from 'react'
+import { useContext } from 'react'
 import styles from './styles.module.scss'
 import { RefreshCw } from 'lucide-react'
 import { OrderProps } from '@/lib/order.type'
@@ -15,7 +15,7 @@ interface Props {
 
 export function Orders({ orders }: Props) {
 
-    const {isOpen, onRequestOpen} = use(OrderContext)
+    const {isOpen, onRequestOpen} = useContext(OrderContext)
     const router = useRouter()
     
 

@@ -8,15 +8,15 @@ import { calculateTotalOrder } from '@/lib/helper';
 export function Modalorder() {
     const { onRequestClose, order, finishOrder } = useContext(OrderContext);  // Usando useContext para obter os dados do contexto
 
-    console.log("aqui", order)
+    
     // Verifica se o pedido não está carregado
     if (!order) {
-        return <div>Carregando...</div>;  // Exibe um indicador de carregamento enquanto os dados do pedido não estão disponíveis
+       return;
     }
-
+    
     async function handleFinishOrder() {
-         if (order) {
-            await finishOrder(order.id);  // Usa `order.id` pois `order` agora é um único objeto
+        if (order) {
+            await finishOrder(order[0].order.id);  // Usa `order.id` pois `order` agora é um único objeto
         }  
     }
 
@@ -31,22 +31,23 @@ export function Modalorder() {
                     <h2>Detalhes do pedido</h2>
 
                     <span className={styles.table}>
-                        Mesa <b>{order.order.table}</b>
+                        Mesa <b>{order[0].order.table}</b>
                     </span>
 
-                    {order.order.name && (
+                    {order[0].order.name && (
                         <span className={styles.name}>
-                            <b>{order.order.name}</b>
+                            <b>{order[0].order.name}</b>
                         </span>
                     )}
 
-                    {/* Exibe os itens do pedido */}
-                    <section className={styles.item} key={order.id}>
-                        <span>Qtd: {order.amount} - <b>{order.product.name}</b> - R$    {Number(order.product.price) * Number(order.amount)}</span>
-                        <span className={styles.description}>{order.product.description}</span>
-                    </section>
+                    {order.map(item => (
+                        <section className={styles.item} key={item.id}>
+                            <span>Qtd: {item.amount} - <b>{item.product.name}</b> - R$ {Number(item.product.price) * Number(item.amount)}</span>
+                            <span className={styles.description}>{item.product.description}</span>
+                        </section>
+                    ))}
 
-                    <h3 className={styles.total}>Valor total do pedido: R$ {calculateTotalOrder([order])}</h3>
+                     <h3 className={styles.total}>Valor total do pedido: R$ {calculateTotalOrder(order)}</h3>
 
                     <button className={styles.buttonOrder} onClick={handleFinishOrder}>
                         Concluir pedido

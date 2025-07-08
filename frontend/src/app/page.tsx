@@ -1,7 +1,6 @@
 import styles from "./page.module.scss";
 import Image from "next/image"
 import Menu from '../../public/Menu.png'
-import Link from "next/link"
 import {api} from "@/services/api"
 import {cookies} from "next/headers"
 import { redirect } from "next/navigation";
@@ -85,9 +84,6 @@ export default function Home() {
 
           </form>
 
-          <Link href="/signup" className="styles.text">
-            Não possui uma conta? Cadastre-se
-          </Link>
         </section>
       </div>
     </>

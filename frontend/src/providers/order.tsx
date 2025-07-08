@@ -33,7 +33,7 @@ type OrderContextData = {  // Define o tipo de dados que o nosso contexto irá a
     isOpen: boolean; // Um valor booleano que indica se o pedido está aberto ou fechado.
     onRequestOpen: (order_id: number) => Promise<void>; // Função que será chamada para abrir o pedido.
     onRequestClose: () => void; // Função que será chamada para fechar o pedido.
-    order: OrderItemProps | undefined;  
+    order: OrderItemProps[];
     finishOrder: (order_id: number) => Promise<void>;
 }
 
@@ -46,26 +46,27 @@ export const OrderContext = createContext({} as OrderContextData)  // Cria um co
 export function OrderProvider({ children }: OrderProviderProps) {  // Este é o componente que vai "fornecer" os dados para os outros componentes (o contexto).
 
     const [isOpen, setIsOpen] = useState(false) // Cria um estado chamado "isOpen" para armazenar se o pedido está aberto (true) ou fechado (false).
-    const [order, setOrder] = useState<OrderItemProps | undefined>(undefined);
+    const [order, setOrder] = useState<OrderItemProps[]>([]);
     const router = useRouter();
 
     async function onRequestOpen(order_id: number) {  // Função para abrir o pedido.
 
         const token = getCookieClient();
-
-        const response = await api.get("/order/detail", {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            params: {
-                order_id: order_id
-            }
-        })
-        console.log(response.data)
-        
-
-        setOrder(response.data)
-        console.log(order)
+        try {
+            const response = await api.get("/order/detail", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                params: {
+                    order_id: order_id
+                }
+            })
+            setOrder(response.data)
+        } catch (err){
+            console.log(err)
+            toast.error("Não existe items adicionados ao pedido")
+            return;
+        }
 
         setIsOpen(true)  // Define o estado "isOpen" como true, indicando que o pedido está aberto.
     }
@@ -76,6 +77,7 @@ export function OrderProvider({ children }: OrderProviderProps) {  // Este é o 
 
 
     async function finishOrder(order_id: number) {
+        console.log(order_id)
         const token = getCookieClient();
 
         const data = {
